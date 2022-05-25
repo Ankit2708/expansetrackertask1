@@ -24,7 +24,7 @@ formm.addEventListener('submit', (e)=>{
     }
     
     else{
-        axios.post('http://localhost:3000/signup',{
+        axios.post('http://localhost:3000/user/signUp',{
             name:namee,
             email: email,
             password:password

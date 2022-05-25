@@ -8,9 +8,9 @@ const signUp=(req,res)=>{
         bcrypt.hash(password,salt,function(err,hash){
             if(err){
                 console.log(err)
-                res.json({message:'unable to create user'})
+                return res.json({message:'unable to create user'})
             }
-            User.create({name,email,password:hash}).then(()=>{
+            User.create({name:name,email:email,password:hash}).then(()=>{
                 res.status(201).json({message:'user created successfully'})
             }).catch(err=>{
                 res.status(403).json(err)
