@@ -35,9 +35,9 @@ app.use(express.json())
 //     });
 // } );
 
-// function generateAccessToken(id) {
-//     return jwt.sign(id ,process.env.TOKEN_SECRET);
-// }
+function generateAccessToken(id) {
+    return jwt.sign(id ,process.env.TOKEN_SECRET);
+}
 app.use('/user',userRoutes)
 sequelize.sync().then(()=>{
     app.listen(3000)
