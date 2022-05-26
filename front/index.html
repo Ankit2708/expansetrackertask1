@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <div class="container">
+        <div class="expanse_form_container">
+            <form class="expanse_form" id="expanse_form">
+                <div class="form_item">
+                    <label for="money">Money spent</label>
+                    <input type="number" name="money" id="money">
+                </div>
+                <div class="form_item">
+                    <label for="description">Description</label>
+                    <input type="text" name="description" id="description">
+                </div>
+                <div class="form_item">
+                    <label for="category">Category</label>
+                    <select name="category" id="category">
+                        <option value="movie">Movie</option>
+                        <option value="grocery">Grocery Shopping</option>
+                        <option value="fuel">Fuel Expanses</option>
+                        <option value="bills">Monthly Bills</option>
+                    </select>
+                </div>
+                <button type="submit" class="add_expanse_btn" id="add_expanse_btn"> +</button>
+            </form>
+        </div>
+    </div>
+    <script src="./home.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/0.26.1/axios.min.js" integrity="sha512-bPh3uwgU5qEMipS/VOmRqynnMXGGSRv+72H/N260MQeXZIK4PG48401Bsby9Nq5P5fz7hy5UGNmC/W1Z51h2GQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+</body>
+</html>
