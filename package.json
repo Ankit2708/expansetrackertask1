@@ -1,7 +1,6 @@
 {
   "name": "expansetracker",
   "version": "1.0.0",
-  "description": "",
   "main": "script.js",
   "dependencies": {
     "abbrev": "^1.1.1",
@@ -129,6 +128,7 @@
     "qs": "^6.10.3",
     "range-parser": "^1.2.1",
     "raw-body": "^2.5.1",
+    "razorpay": "^2.8.1",
     "rc": "^1.2.8",
     "readdirp": "^3.6.0",
     "registry-auth-token": "^4.2.1",
@@ -139,7 +139,7 @@
     "semver": "^5.7.1",
     "semver-diff": "^3.1.1",
     "send": "^0.18.0",
-    "sequelize": "^6.19.2",
+    "sequelize": "^6.20.0",
     "serve-static": "^1.15.0",
     "setprototypeof": "^1.2.0",
     "side-channel": "^1.0.4",
@@ -174,5 +174,14 @@
     "start": "nodemon app.js"
   },
   "author": "",
-  "license": "ISC"
+  "license": "ISC",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Ankit2708/expansetrackertask1.git"
+  },
+  "bugs": {
+    "url": "https://github.com/Ankit2708/expansetrackertask1/issues"
+  },
+  "homepage": "https://github.com/Ankit2708/expansetrackertask1#readme",
+  "description": ""
 }

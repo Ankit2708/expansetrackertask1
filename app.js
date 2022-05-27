@@ -6,7 +6,10 @@ let cors=require('cors')
 const sequelize=require('./util/database')
 const User=require('./models/user')
 const userRoutes=require('./routes/user')
+const purchaseRoutes=require('./routes/purchase')
+const order=require('./models/order')
 const dotenv=require('dotenv')
+const Expanse = require('./models/expanse')
 const app=express()
 dotenv.config()
 app.use(cors())
@@ -40,7 +43,11 @@ function generateAccessToken(id) {
     return jwt.sign(id ,process.env.TOKEN_SECRET);
 }
 app.use('/user',userRoutes)
-sequelize.sync().then(()=>{
+app.use('/user',Expanse)
+app.use('/user',purchaseRoutes)
+User.hasMany(Expanse)
+Expanse.belongsTo(User)
+sequelize.sync({force:true}).then(()=>{
     app.listen(3000)
     console.log('database is connected')
 }).catch(err=>console.log(err))
