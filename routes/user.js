@@ -1,12 +1,21 @@
-const express=require('express')
+const express = require('express');
 
-const userController=require('../controller/user')
-const expanseController=require('../controller/expanse')
-const authmiddleware=require('../middleware/auth')
-const router=express.Router()
-router.post('/signUp',userController.signUp)
-router.post('/login',userController.login)
-router.post('/addExpanse',authmiddleware.authenticate,expanseController.addExpanse)
-router.get('/getExpanse',authmiddleware.authenticate,expanseController.getExpanse)
-router.delete('/deleteExpanse/:expanseId',authmiddleware.authenticate,expanseController.deleteExpanse)
-module.exports=router;
+const userController = require('../controller/user');
+const expenseController = require('../controller/expense')
+
+const authenticatemiddleware = require('../middleware/auth');
+
+const router = express.Router();
+
+//router.get('/signup',userController.signup)
+router.post('/signup', userController.signup);
+
+router.post('/login', userController.login)
+
+router.post('/addexpense', authenticatemiddleware.authenticate, expenseController.addexpense )
+
+router.get('/getexpenses', authenticatemiddleware.authenticate, expenseController.getexpenses )
+
+router.delete('/deleteexpense/:expenseid', authenticatemiddleware.authenticate, expenseController.deleteexpense)
+
+module.exports = router;

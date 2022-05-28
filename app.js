@@ -1,53 +1,57 @@
-const express=require('express')
-const bcrypt=require('bcrypt')
-const path=require('path')
-let cors=require('cors')
+const path = require('path');
 
-const sequelize=require('./util/database')
-const User=require('./models/user')
-const userRoutes=require('./routes/user')
-const purchaseRoutes=require('./routes/purchase')
-const order=require('./models/order')
-const dotenv=require('dotenv')
-const Expanse = require('./models/expanse')
-const app=express()
-dotenv.config()
-app.use(cors())
-app.use(express.json())
-// app.get('/user/signup', (req, res)=>{
-//     const { name, email, password } = req.body;
-//     const saltRounds = 10;
-//     bcrypt.genSalt(saltRounds, function(err, salt) {
-//         bcrypt.hash(password, salt, function(err, hash) {
-//             //Store hash in your password DB.
-//             if(err){
-//                 console.log(err)
-//                 console.log('Unable to create new user')
-//                 res.json({message: 'Unable to create new user'})
-//                 return
+const express = require('express');
+var cors = require('cors')
 
-//             }else{
-//                 User.create({ name, email, password: hash }).then(() => {
-//                     return res.status(201).json({message: 'Successfuly create new user'})
-//                 }).catch(err => {
-//                     res.status(403).json(err);
-//                 })
-    
-//             }
-            
-//         });
-//     });
-// } );
+const sequelize = require('./util/database');
+const User = require('./models/users');
+const Expense = require('./models/expenses');
+const Order = require('./models/orders');
 
-function generateAccessToken(id) {
-    return jwt.sign(id ,process.env.TOKEN_SECRET);
-}
-app.use('/user',userRoutes)
-app.use('/user',Expanse)
-app.use('/user',purchaseRoutes)
-User.hasMany(Expanse)
-Expanse.belongsTo(User)
-sequelize.sync({force:true}).then(()=>{
-    app.listen(3000)
-    console.log('database is connected')
-}).catch(err=>console.log(err))
+
+
+
+
+const userRoutes = require('./routes/user')
+const expenseRoutes=require('./routes/expense')
+const purchaseRoutes = require('./routes/purchase')
+
+
+const app = express();
+const dotenv = require('dotenv');
+
+// get config vars
+dotenv.config();
+
+
+app.use(cors());
+app.use(express.static(path.join(__dirname,'./front/ExpenseTracker')))
+app.use(express.urlencoded({extended:false}))
+
+// app.use(bodyParser.urlencoded());  ////this is for handling forms
+app.use(express.json());  //this is for handling jsons
+
+app.use('/user', userRoutes)
+app.use('/expense',expenseRoutes)
+
+app.use('/purchase', purchaseRoutes)
+
+
+
+
+
+User.hasMany(Expense);
+Expense.belongsTo(User);
+
+User.hasMany(Order);
+Order.belongsTo(User);
+
+
+
+sequelize.sync()
+    .then(() => {
+        app.listen(3000);
+    })
+    .catch(err => {
+        console.log(err);
+    })
