@@ -68,7 +68,21 @@ function removeExpensefromUI(expenseid){
     const expenseElemId = `expense-${expenseid}`;
     document.getElementById(expenseElemId).remove();
 }
-
+function download(){
+    axios.get('http://localhost:3000/download',{headers:{"Authorization":token}})
+    .then(response=>{
+        if(response.status===201){
+            var a =document.createElement('a')
+            a.href=response.data.fileUrl;
+            a.download='myexpense.csv';
+            a.click()
+        }else{
+            throw new Error(response.data.message)
+        } 
+    }).catch(err=>{
+        showError(err)
+    })
+}
 
 
 document.getElementById('rzp-button1').onclick = async function (e) {
