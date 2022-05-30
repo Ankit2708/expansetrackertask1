@@ -13,6 +13,7 @@ router.post('/signup', userController.signup);
 router.post('/login', userController.login)
 
 router.post('/addexpense', authenticatemiddleware.authenticate, expenseController.addexpense )
+router.get('/download',authenticatemiddleware.authenticate,expenseController.downloadExpenses)
 
 router.get('/getexpenses', authenticatemiddleware.authenticate, expenseController.getexpenses )
 

@@ -1,5 +1,7 @@
 const Expense = require('../models/expenses');
 const User = require('../models/users');
+const {BlobServiceClent}=require('@azure/storage-blob')
+const {v1:uuidv1}=require('uuid')
 
 const addexpense = (req, res) => {
     const { expenseamount, description, category } = req.body;
@@ -29,6 +31,35 @@ const deleteexpense = (req, res) => {
         return res.status(403).json({ success: true, message: "Failed"})
     })
 }
+const downloadExpenses= async(req,res)=>{
+    try{
+        if(!req.user.ispremiumuser){
+            return res.status(401).json({success:false,message:'user is not premium'})
+        }
+        const AZURE_STORAGE_CONNECTION_STRING=process.env.AZURE_STORAGE_CONNECTION_STRING
+        const blobServiceClent=BlobServiceClent.fromConnectionString(AZURE_STORAGE_CONNECTION_STRING)
+        const containerName= 'shivhareankit2708expensetracker';
+        console.log('/nCreatingContainer')
+        console.log('/t,containerName')
+         // Get a reference to a container
+        const containerClient= await blobServiceClent.getContainerClient(containerName)
+        if(!containerClient.exists()){
+            const createContainerResponse= await containerClient.create({access:'container'})
+            console.log("container was created successfully. requestId",createContainerResponse.requestId)
+        }
+        const blobName='expenses'+uuidv1+'txt';
+         // Get a block blob client
+         const blockBlobClient=containerClient.getblockBlobClient(blobName)
+         console.log('\nUploading to Azure storage as blob:\n\t', blobName);
+         const data=JSON.stringify(await req.user.getExpenses())
+        const uploadBlobResponse=await blockBlobClient.upload(data,data.length)
+        console.log("Blob was uploaded successfully. requestId: ", JSON.stringify(uploadBlobResponse));
+        const fileUrl = `https://demostoragesharpener.blob.core.windows.net/${containerName}/${blobName}`;
+        res.status(201).json({success:true,message:'successfully downloaded'})
+    }catch(err){
+        res.status(500).json({error:err,success:false,message:'something went wrong'})
+    }
+}
 const getAllExpense=(req,res)=>{
     Expense.findAll().then(data=>{
         var k=data[0]
@@ -50,5 +81,7 @@ module.exports = {
     getexpenses,
     addexpense,
     getAllExpense,
-    getExpenseById
+    getExpenseById,
+    downloadExpenses
+
 }
