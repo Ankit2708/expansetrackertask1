@@ -163,6 +163,7 @@
     "update-notifier": "^5.1.0",
     "url-parse-lax": "^3.0.0",
     "utils-merge": "^1.0.1",
+    "uuid": "^8.3.2",
     "vary": "^1.1.2",
     "widest-line": "^3.1.0",
     "wrap-ansi": "^7.0.0",

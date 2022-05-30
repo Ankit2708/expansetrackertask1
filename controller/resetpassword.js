@@ -41,7 +41,7 @@ const resetpassword=(req,res)=>{
     Forgotpassword.findOne({where:{id}}).then(forgotpasswordrequest=>{
         if(forgotpasswordrequest){
             forgotpasswordrequest.update({active:false})
-            res.status(202).send(`<html>
+            res.statusCode(202).send(`<html>
             <script>function formsubmitted(e){
                 e.preventDefault()
                 console.log('called')

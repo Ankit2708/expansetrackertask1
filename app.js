@@ -52,7 +52,7 @@ Forgotpassword.belongsTo(User)
 
 
 
-sequelize.sync()
+sequelize.sync({force:true})
     .then(() => {
         app.listen(3000);
     })
