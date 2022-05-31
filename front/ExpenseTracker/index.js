@@ -22,9 +22,15 @@ function addNewExpense(e){
 
 }
 
-window.addEventListener('load', ()=> {
-    axios.get('http://localhost:3000/user/getexpenses', { headers: {"Authorization" : token} }).then(response => {
-        if(response.status === 200){
+window.addEventListener('load', async()=> {
+    var page = location.href.split("page=").slice(-1)[0] || 1;
+    console.log(page)
+    if(page.length>3){
+        page=1
+    }
+    await axios.get(`http://localhost:3000/user/getexpenses?page=${page}`, { headers: {"Authorization" : token} }).then(response => {
+    var totalPages=response.data.totalPages;    
+    if(response.status === 200){
             response.data.expenses.forEach(expense => {
 
                 addNewExpense(expense);
@@ -32,8 +38,9 @@ window.addEventListener('load', ()=> {
         } else {
             throw new Error();
         }
+        CreatingPagination(totalPages)
     })
-});
+})
 
 function addNewExpensetoUI(expense){
     const parentElement = document.getElementById('listOfExpenses');
@@ -127,4 +134,11 @@ document.getElementById('rzp-button1').onclick = async function (e) {
   alert(response.error.metadata.order_id);
   alert(response.error.metadata.payment_id);
  });
+}
+function CreatingPagination(){
+    const paginationContainer=document.getElementById('pagination')
+    for(let i=0;i<=totalPages;i++){
+        const a=`<a href="./home.html?page=${i}">${i}></a>`
+        paginationContainer.innerHTML+=a
+    }
 }
