@@ -11,11 +11,26 @@ const addexpense = (req, res) => {
         return res.status(403).json({success : false, error: err})
     })
 }
-
+const Item_Per_Page=10
 const getexpenses = (req, res)=> {
-
+    const pageno=req.query.page||1
+    const totalrows=req.query.rowno
+    const Item_per_page=parseInt(totalrows)
+    var totalPages,totalexpense
     req.user.getExpenses().then(expenses => {
-        return res.status(200).json({expenses, success: true})
+        var expensedata=expenses
+        
+        totalPages=Math.ceil(expensedata.length/Item_Per_Page)
+        var totalexpense=0;
+        for(let i=0;i<expensedata.length;i++){
+            totalexpense+=expensedata[i].expenseamount
+        }
+        return totalexpense
+        
+    }).then(totalexpense=>{
+        req.user.getExpenses({offset:(pageno-1)*Item_Per_Page,limit:Item_Per_Page}).then(expenses=>{
+            return res.status(200).json({expenses, success: true})
+        })
     })
     .catch(err => {
         return res.status(402).json({ error: err, success: false})

@@ -21,7 +21,20 @@
         </select>
         <button>Add Expense</button>
         <div class="pages" id="pagination"></div>
+        <div class="paginationCont">
+            <label for="category">row per page</label>
+            <select id="row-per-page" name="row-per-page">
+                <option value="10">10</option>
+                <option value="15">15</option>
+                <option value="20">20</option>
+                <option value="25">25</option>
+                <option value="30">30</option>
+            </select>
+        </div>
     </form>
+    <div class="logout" id="logout">
+        <button class="logout_button" id="logout_button">logout</button>
+    </div>
     <ul id='listOfExpenses'>
 
     </ul>

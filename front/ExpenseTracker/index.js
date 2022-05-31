@@ -23,13 +23,38 @@ function addNewExpense(e){
 }
 
 window.addEventListener('load', async()=> {
+    document.getElementById('row-per-page').value=localStorage.getItem('noofrows')
+    var token=localStorage.getItem('token')
+    if(!token){
+        window.location.replace('./login.html')
+    }
     var page = location.href.split("page=").slice(-1)[0] || 1;
     console.log(page)
     if(page.length>3){
         page=1
     }
     await axios.get(`http://localhost:3000/user/getexpenses?page=${page}`, { headers: {"Authorization" : token} }).then(response => {
-    var totalPages=response.data.totalPages;    
+    var rows=localStorage.getItem('noofrows')
+    rows=rows||10
+    var totalPages=response.data.totalPages; 
+    await axios.get(`http://localhost:3000/user/getexpenses?page=${page}&rowno=${rows}`).then(data=>{
+        console.log(data.data)
+        var totalpages=data.data.totalpages
+        data=data.data.expense
+        for(let i=0;i<data.length;i++){
+            expense_item_cont.innerHTML=  expense_item_cont.innerHTML+` <div class="expense_item">
+            <p>${count}</p>
+            <p>${data[i].expenseamount}</p>
+            <p>${data[i].description}</p>
+            <p>${data[i].category}</p>
+            <p>${data[i].createdAt}</p>
+    
+        </div>`
+            count++;
+        }
+        console.log(totalpages)
+        
+    })   
     if(response.status === 200){
             response.data.expenses.forEach(expense => {
 
@@ -141,4 +166,13 @@ function CreatingPagination(){
         const a=`<a href="./home.html?page=${i}">${i}></a>`
         paginationContainer.innerHTML+=a
     }
+}
+function logout(){
+    document.getElementById('logout_button').addEventListener('click',()=>{
+        localStorage.clear()
+        window.location.replace('./login.html')
+    })
+}
+document.getElementById('row-per-page').onchange=function(e){
+    localStorage.setItem('noofrows',e.target.value)
 }
